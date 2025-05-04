@@ -3,7 +3,7 @@ import json
 
 import pandas as pd
 
-from training.main import screen
+from screening.main import screen
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Screening")
