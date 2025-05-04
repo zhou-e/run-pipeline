@@ -32,4 +32,6 @@ def get_model_score(df, df_json, model):
     for score in scores:
         print(f"cnvrg_linechart_accuracy value: {score}")
 
-    return np.mean(scores)
+    model.fit(X, y)
+
+    return model, np.mean(scores)

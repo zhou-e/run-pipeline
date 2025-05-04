@@ -1,5 +1,6 @@
 import argparse
 import json
+import pickle as pkl
 
 import pandas as pd
 
@@ -19,5 +20,8 @@ df = pd.read_parquet(data)
 with open(data_json) as file:
     df_json = json.load(file)
 
-score = get_model_score(df, df_json, model)
+model, score = get_model_score(df, df_json, model)
 print(f"cnvrg_tag_accuracy: {score}")
+
+with open("model.sav", "wb") as file:
+    pkl.dump(model, file)
