@@ -1,3 +1,4 @@
+from functools import partial
 from multiprocessing import cpu_count, Pool
 
 import pandas as pd
@@ -26,7 +27,7 @@ def screen_param(args, threshold=0.1):
         return name
 
 
-def screen(df: pd.DataFrame, df_json: dict, n_cpu: int = None):
+def screen(df: pd.DataFrame, df_json: dict, threshold: float = 0.1, n_cpu: int = None):
     if n_cpu is None:
         n_cpu = cpu_count() - 1
 
@@ -35,7 +36,8 @@ def screen(df: pd.DataFrame, df_json: dict, n_cpu: int = None):
     target = df[target_col].values.reshape(-1, 1)
 
     with Pool(n_cpu, initializer=init_worker, initargs=(target,)) as p:
-        res = p.map(screen_param, _col_iter(df, features))
+        func = partial(screen_param, threshold=threshold)
+        res = p.map(func, _col_iter(df, features))
 
     features = [r for r in res if r]
     df_json[FEATURE_KEY] = features
