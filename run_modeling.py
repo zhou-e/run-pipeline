@@ -8,7 +8,7 @@ from modeling.main import get_model_score
 
 parser = argparse.ArgumentParser(description="Screening")
 parser.add_argument("--data", action="store", dest="data", required=True)
-parser.add_argument("--data_json", action="store", dest="data", required=True)
+parser.add_argument("--data_json", action="store", dest="data_json", required=True)
 parser.add_argument("--model", action="store", dest="model", required=True)
 args = parser.parse_args()
 
