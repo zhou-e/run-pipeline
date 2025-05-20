@@ -6,23 +6,37 @@ from sklearn.linear_model import LogisticRegression
 
 from utils.constants import FEATURE_KEY, TARGET_KEY
 
-# Initialize models
-models = {
-    "RF": RandomForestClassifier(random_state=42),
-    "SVM": SVC(probability=True, random_state=42),
-    "LR": LogisticRegression(max_iter=1000, random_state=42)
-}
 
-
-def get_model_score(df, df_json, model):
+def get_model_score(
+    df,
+    df_json,
+    model,
+    rf_trees,
+    rf_depth,
+    svc_kernel,
+    lr_penalty,
+):
     features = df_json[FEATURE_KEY]
     target = df_json[TARGET_KEY]
 
-    model = model.upper()
-    if model not in models:
-        raise ValueError
+    if model.upper() == "RF":
+        model = RandomForestClassifier(
+            n_estimators=rf_trees,
+            max_depth=rf_depth,
+            random_state=42
+        )
+    elif model.upper() == "SVM":
+        model = SVC(kernel=svc_kernel, probability=True, random_state=42)
+    elif model.upper() == "LR":
+        model = LogisticRegression(
+            penalty=lr_penalty,
+            max_iter=1000,
+            random_state=42
+        )
+    else:
+        raise ValueError(f"Model {model} is not supported. Choose from RF, SVM, or LR.")
 
-    model = models[model]
+    print(f"cnvrg_tag_features: {features}")
     X = df[features]
     y = df[target]
     kf = KFold(n_splits=5, shuffle=True, random_state=42)
