@@ -4,7 +4,7 @@ import pickle as pkl
 
 import pandas as pd
 
-from constants import HYPERPARAMS
+from utils.constants import HYPERPARAMS
 from modeling.main import get_model_score
 
 parser = argparse.ArgumentParser(description="Screening")
